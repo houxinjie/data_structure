@@ -1,5 +1,3 @@
-# data_structure
-
 JavaScript数据结构
 ======================
 
