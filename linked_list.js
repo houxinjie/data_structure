@@ -3,14 +3,14 @@
  * Created by houxinjie on 15/7/13.
  */
 function Node(element){
-    this.element = element;
-    this.next = null;
+  this.element = element;
+  this.next = null;
 }
 
 function LinkedList(){
-    var head = new Node('head');
-    this.find = function(item){
-        var current = head;
+  var head = new Node('head');
+  this.find = function(item){
+    var current = head;
         while(current.element !== item){
             current = current.next;
         }

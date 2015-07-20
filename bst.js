@@ -4,6 +4,7 @@
  */
 function Node(data, left, right){
   this.data = data;
+  this.count = 1;
   this.left = left;
   this.right = right;
   this.show = function(){
@@ -13,6 +14,13 @@ function Node(data, left, right){
 
 function BST(){
   this.root = null;
+
+  this.update(data){
+    var grade = this.find(data);
+    grade.count++;
+    return grade;
+  };
+
   this.inOrder = function(node){
     if(node){
       this.inOrder(node.left);
@@ -37,16 +45,22 @@ function BST(){
     }
   };
 
-  this.getMin = function(){
-    var current = this.root;
+  this.getMin = function(current){
+    current = current || this.root;
+    if(!current){
+      return null;
+    }
     while(current.left){
       current = current.left;
     }
     return current.data;
   };
 
-  this.getMax = function(){
-    var current = this.root;
+  this.getMax = function(current){
+    current = current || this.root;
+    if(!current){
+      return null;
+    }
     while(current.right){
       current = current.right;
     }
@@ -65,7 +79,65 @@ function BST(){
       }
     }
     return null;
-  }
+  };
+
+  this.exchange = function(node){
+
+    if(node.left){
+      this.exchange(node.left);
+    }
+
+    if(node.right){
+      this.exchange(node.right);
+    }
+
+    var tempNode = node.left;
+    node.left = node.right;
+    node.right = tempNode;
+
+
+  };
+
+  this.remove = function(data){
+    this.root = this.removeNode(this.root, data);
+  };
+
+  this.removeNode = function(node, data){
+    if(!node){
+      return null;
+    }
+
+    if(data === node.data){
+
+      //没有子节点
+      if(!node.left && !node.right){
+        return null;
+      }
+
+      if(!node.left){
+        return node.right;
+      }
+
+      if(!node.right){
+        return node.left;
+      }
+
+      //两个子节点
+      var rightSmallest = this.getMin(node.right);
+      node.data = rightSmallest;
+      node.right = this.removeNode(node.right, rightSmallest);
+
+      return node;
+
+    }else if(data < node.data){
+      node.left = this.removeNode(node.left, data);
+      return node;
+    }else{
+      node.right = this.removeNode(node.right, data);
+      return node;
+    }
+
+  };
 
   this.insert = function(data){
     var node = new Node(data, null, null);
@@ -109,4 +181,22 @@ nums.insert(22);
 
 //console.log(nums.getMin())
 //console.log(nums.getMax())
-console.log(nums.find(99).data);
+//console.log(nums.find(99).data);
+//nums.exchange(nums.root);
+//nums.inOrder(nums.root);
+
+/*
+nums.inOrder(nums.root);
+
+nums.remove(23);
+
+nums.inOrder(nums.root);
+
+nums.remove(99);
+
+nums.inOrder(nums.root);
+
+nums.remove(3);
+
+nums.inOrder(nums.root);
+*/
